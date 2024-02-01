@@ -75,3 +75,42 @@ C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\n
 C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.genruntimeconfig.cache
 C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.csproj.CopyComplete
 C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Home\OrderDetail.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.exe
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.deps.json
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.runtimeconfig.json
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.runtimeconfig.dev.json
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.dll
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.pdb
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.Views.dll
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\bin\Debug\netcoreapp3.1\MVC WEB Project.Views.pdb
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.csproj.AssemblyReference.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.AssemblyInfoInputs.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.AssemblyInfo.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.csproj.CoreCompileInputs.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.RazorAssemblyInfo.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.RazorAssemblyInfo.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\staticwebassets\MVC WEB Project.StaticWebAssets.Manifest.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\staticwebassets\MVC WEB Project.StaticWebAssets.xml
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\scopedcss\bundle\MVC WEB Project.styles.css
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.TagHelpers.input.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.TagHelpers.output.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.RazorCoreGenerate.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Home\OrderDetail.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.RazorTargetAssemblyInfo.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.RazorTargetAssemblyInfo.cs
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.Views.pdb
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.dll
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.pdb
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.genruntimeconfig.cache
+C:\Users\SD - Staff\source\repos\MVC-WEB-2\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.csproj.CopyComplete

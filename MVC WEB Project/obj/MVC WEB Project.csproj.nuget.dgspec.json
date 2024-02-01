@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj": {}
+    "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-2\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj": {
+    "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-2\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj",
+        "projectUniqueName": "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-2\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj",
         "projectName": "MVC WEB Project",
-        "projectPath": "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj",
+        "projectPath": "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-2\\MVC-WEB-Project-Git\\MVC WEB Project\\MVC WEB Project.csproj",
         "packagesPath": "C:\\Users\\SD - Staff\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-Project-Git\\MVC WEB Project\\obj\\",
+        "outputPath": "C:\\Users\\SD - Staff\\source\\repos\\MVC-WEB-2\\MVC-WEB-Project-Git\\MVC WEB Project\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
