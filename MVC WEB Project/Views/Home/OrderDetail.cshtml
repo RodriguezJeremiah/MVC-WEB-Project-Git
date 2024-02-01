@@ -1,0 +1,29 @@
+﻿@model MVC_WEB_Project.Models.Order
+
+@{
+    ViewData["Title"] = "Order Detail";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Order Details</h1>
+    <table class="table">
+        <tr>
+            <th>Order No</th>
+            <td>@Model.OrderNo</td>
+        </tr>
+        <tr>
+            <th>Order Date</th>
+            <td>@Model.OrderDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <th>Customer Name</th>
+            <td>@Model.CustomerName</td>
+        </tr>
+        <tr>
+            <th>Total Amount</th>
+            <td>@Model.TotalAmount.ToString("C")</td>
+        </tr>
+    </table>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Go back to Orders Page</a>
+</div>
+

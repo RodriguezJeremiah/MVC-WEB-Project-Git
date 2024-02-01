@@ -74,3 +74,4 @@ C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\n
 C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.pdb
 C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.genruntimeconfig.cache
 C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\MVC WEB Project.csproj.CopyComplete
+C:\Users\SD - Staff\source\repos\MVC-WEB-Project-Git\MVC WEB Project\obj\Debug\netcoreapp3.1\Razor\Views\Home\OrderDetail.cshtml.g.cs
