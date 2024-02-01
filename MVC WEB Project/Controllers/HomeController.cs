@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MVC_WEB_Project.Models;
+using MVC_WEB_Project.Models; //ari ni kuha og models
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,6 +32,21 @@ namespace MVC_WEB_Project.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        public IActionResult OrderDetail(int orderId, DateTime dateTime, string customerName, decimal totalAmount)
+        {
+
+            var order = new Order
+            {
+                OrderNo = orderId,
+                OrderDate = dateTime,
+                CustomerName = customerName,
+                TotalAmount = totalAmount,
+            };
+
+            return View(order);
         }
     }
 }
