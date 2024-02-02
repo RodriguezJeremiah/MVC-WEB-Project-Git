@@ -48,5 +48,10 @@ namespace MVC_WEB_Project.Controllers
 
             return View(order);
         }
+
+        public IActionResult Customers()
+        {
+            return View();
+        }
     }
 }
