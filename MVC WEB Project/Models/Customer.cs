@@ -12,9 +12,7 @@ namespace MVC_WEB_Project.Models
         public int CustomerId { get; set; }
 
         [Required]
-        public string FirstName { get; set; }
+        public string CustomerName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
     }
 }

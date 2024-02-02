@@ -16,7 +16,12 @@ namespace MVC_WEB_Project.Data
 
         }
         public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<MVC_WEB_Project.Models.Order> Order { get; set; }
+
     }
+
 }
 
 
