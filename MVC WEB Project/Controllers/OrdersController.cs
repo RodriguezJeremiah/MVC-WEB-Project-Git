@@ -74,20 +74,33 @@ namespace MVC_WEB_Project.Controllers
                 var selectedCustomer = _context.Customers.FirstOrDefault(c => c.CustomerId == order.CustomerId);
                 order.CustomerName = selectedCustomer?.CustomerName;
 
-                // Add the order to the context
-                _context.Orders.Add(order);
-
-                // Update stock and create order items
+                // Calculate total amount for each order item
                 foreach (var orderItem in order.OrderItems)
                 {
                     var product = _context.Products.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
                     if (product != null)
                     {
-                        // Update stock
-                        product.StockOnHand -= orderItem.Quantity;
-
                         // Calculate total amount for the order item
                         orderItem.TotalAmount = orderItem.Quantity * product.Price;
+
+                        // Set the Price based on the selected product
+                        orderItem.Price = product.Price;
+                    }
+                }
+
+                // Calculate total amount for the order
+                order.TotalAmount = order.OrderItems.Sum(oi => oi.TotalAmount);
+
+                // Add the order to the context
+                _context.Orders.Add(order);
+
+                // Update stock
+                foreach (var orderItem in order.OrderItems)
+                {
+                    var product = _context.Products.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+                    if (product != null)
+                    {
+                        product.StockOnHand -= orderItem.Quantity;
                     }
                 }
 
@@ -98,6 +111,7 @@ namespace MVC_WEB_Project.Controllers
 
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
             ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
+
             return View(order);
         }
 

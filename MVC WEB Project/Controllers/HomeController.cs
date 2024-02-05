@@ -35,7 +35,7 @@ namespace MVC_WEB_Project.Controllers
         }
 
 
-        public IActionResult OrderDetail(int orderId, DateTime dateTime, int customerId, double totalAmount)
+        public IActionResult OrderDetail(int orderId, DateTime dateTime, int customerId, decimal totalAmount)
         {
 
             var order = new Order

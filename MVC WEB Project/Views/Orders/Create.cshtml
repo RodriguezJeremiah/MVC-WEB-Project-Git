@@ -11,44 +11,67 @@
     }
 </style>
 <div class="text-center">
-    <h1>Add a Order</h1>
+    <h1>Add an Order</h1>
     <div class="row">
-        <div class="col-xs-1 text-center">
+        <div class="col-md-4">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="OrderNo" class="control-label"></label>
-                    <input asp-for="OrderNo" class="form-control" />
-                    <span asp-validation-for="OrderNo" class="text-danger"></span>
-                </div>
                 <div class="form-group">
                     <label asp-for="OrderDate" class="control-label"></label>
                     <input asp-for="OrderDate" class="form-control" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <p>Select a Customer</p>
-                    <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control">
-                        @*<option value="" readonly>-- Select Customer --</option>*@
-                    </select>
+                    <label asp-for="CustomerId"></label>
+                    <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
-                    <input asp-for="TotalAmount" class="form-control" />
+                    <input asp-for="TotalAmount" class="form-control" readonly />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
-                @*<div class="form-group">
-            <p>Select a Product</p>
-            <select asp-for="OrderItems" asp-items="ViewBag.Products" class="form-control">
-            </select>
-        </div>*@
+
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-success" />
+                    <label asp-for="Product"></label>
+                    <select asp-for="Product" asp-items="ViewBag.Products" class="form-control"></select>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                <select @*asp-for="OrderItems[i].ProductId" asp-items="ViewBag.Products"*@ class="form-control"></select>
+                            </td>
+                            <td>
+                                <input @*asp-for="OrderItems[i].Quantity"*@ class="form-control" />
+                            </td>
+                            <td>
+                                <input @*asp-for="OrderItems[i].Price"*@ class="form-control" readonly />
+                            </td>
+                            <td>
+                                <input @*asp-for="OrderItems[i].TotalAmount"*@ class="form-control" readonly />
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
-
     <div>
         <a asp-action="Index" class="btn btn-info">Back to List</a>
     </div>
