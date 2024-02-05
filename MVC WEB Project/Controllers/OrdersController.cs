@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +19,18 @@ namespace MVC_WEB_Project.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Order.ToListAsync());
+            IQueryable<Order> orders = _context.Order.Include(o => o.Customer).Include(o => o.OrderItems).ThenInclude(oi => oi.Product);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                orders = orders.Where(o => o.Customer.CustomerName.Contains(search));
+            }
+
+            var orderList = await orders.ToListAsync();
+
+            return View(orderList);
         }
 
         // GET: Orders/Details/5
@@ -34,7 +42,11 @@ namespace MVC_WEB_Project.Controllers
             }
 
             var order = await _context.Order
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
                 .FirstOrDefaultAsync(m => m.OrderNo == id);
+
             if (order == null)
             {
                 return NotFound();
@@ -47,12 +59,10 @@ namespace MVC_WEB_Project.Controllers
         public IActionResult Create()
         {
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
             return View();
         }
 
-        // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         // POST: Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -62,19 +72,32 @@ namespace MVC_WEB_Project.Controllers
             {
                 // Retrieve customer details based on selected CustomerId
                 var selectedCustomer = _context.Customers.FirstOrDefault(c => c.CustomerId == order.CustomerId);
-
-                // Set CustomerName in the Order model
                 order.CustomerName = selectedCustomer?.CustomerName;
 
-                // Add the order to the context and save changes
+                // Add the order to the context
                 _context.Orders.Add(order);
+
+                // Update stock and create order items
+                foreach (var orderItem in order.OrderItems)
+                {
+                    var product = _context.Products.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+                    if (product != null)
+                    {
+                        // Update stock
+                        product.StockOnHand -= orderItem.Quantity;
+
+                        // Calculate total amount for the order item
+                        orderItem.TotalAmount = orderItem.Quantity * product.Price;
+                    }
+                }
+
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
 
-            // Handle ModelState errors
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
             return View(order);
         }
 
@@ -86,46 +109,59 @@ namespace MVC_WEB_Project.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Order
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .FirstOrDefaultAsync(m => m.OrderNo == id);
+
             if (order == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
+
             return View(order);
         }
 
         // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderNo,OrderDate,TotalAmount")] Order order)
+        public async Task<IActionResult> Edit(Order order)
         {
-            if (id != order.OrderNo)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                // Retrieve customer details based on selected CustomerId
+                var selectedCustomer = _context.Customers.FirstOrDefault(c => c.CustomerId == order.CustomerId);
+                order.CustomerName = selectedCustomer?.CustomerName;
+
+                // Update stock and create order items
+                foreach (var orderItem in order.OrderItems)
                 {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.OrderNo))
+                    var product = _context.Products.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+                    if (product != null)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        // Update stock
+                        product.StockOnHand -= orderItem.Quantity;
+
+                        // Calculate total amount for the order item
+                        orderItem.TotalAmount = orderItem.Quantity * product.Price;
                     }
                 }
+
+                // Update order in the context
+                _context.Update(order);
+
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
+
             return View(order);
         }
 
@@ -138,7 +174,11 @@ namespace MVC_WEB_Project.Controllers
             }
 
             var order = await _context.Order
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
                 .FirstOrDefaultAsync(m => m.OrderNo == id);
+
             if (order == null)
             {
                 return NotFound();
@@ -152,9 +192,25 @@ namespace MVC_WEB_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Order
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(m => m.OrderNo == id);
+
+            // Restore stock
+            foreach (var orderItem in order.OrderItems)
+            {
+                var product = _context.Products.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
+                if (product != null)
+                {
+                    product.StockOnHand += orderItem.Quantity;
+                }
+            }
+
+            // Remove order from context
             _context.Order.Remove(order);
-            await _context.SaveChangesAsync();
+
+            _context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 

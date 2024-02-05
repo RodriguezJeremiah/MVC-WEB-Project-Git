@@ -16,22 +16,28 @@
     <hr />
     <div class="row">
         <div class="col-xs-1 text-center">
-            @*<label asp-for="CustomerName" class="control-label" readonly></label>
-                <input asp-for="CustomerName" class="form-control" readonly />*@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="OrderNo" />
-
                 <div class="form-group">
                     <label asp-for="OrderDate" class="control-label"></label>
                     <input asp-for="OrderDate" class="form-control" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="CustomerName" class="control-label"></label>
+                    <input asp-for="CustomerName" class="form-control" />
+                    <span asp-validation-for="CustomerName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
                     <input asp-for="TotalAmount" class="form-control" />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
+                @*@*<div class="form-group">
+            <p>Select a Product</p>
+            <select asp-for="ProductId" asp-items="ViewBag.Products" class="form-control">
+            </select>
+        </div>*@
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success" />
                 </div>
@@ -43,6 +49,6 @@
         <a asp-action="Index" class="btn btn-primary">Back to List</a>
     </div>
 </div>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

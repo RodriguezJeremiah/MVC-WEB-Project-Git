@@ -9,11 +9,19 @@
 </p>
 <div class="text-center">
     <h1 class="display-4">List of Orders</h1>
+    <form asp-action="Index" method="get">
+        <div class="input-group mb-4">
+            <input type="text" name="search" class="form-control" placeholder="Enter customer name">
+            <div class="input-group-append">
+                <button id="button-addon5" type="submit" class="btn btn-outline-success">Search</button>
+            </div>
+        </div>
+    </form>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.OrderNo)
+                    @Html.DisplayNameFor(model => model.Id)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.OrderDate)
@@ -30,25 +38,25 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CustomerName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalAmount)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.OrderNo" class="btn btn-primary">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OrderNo" class="btn btn-info">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderNo" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAmount)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.OrderNo" class="btn btn-primary">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.OrderNo" class="btn btn-info">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.OrderNo" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
