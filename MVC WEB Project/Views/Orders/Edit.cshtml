@@ -19,8 +19,13 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
+                    <label asp-for="OrderNo" class="control-label"></label>
+                    <input asp-for="OrderNo" class="form-control" readonly />
+                    <span asp-validation-for="OrderNo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="OrderDate" class="control-label"></label>
-                    <input asp-for="OrderDate" class="form-control" />
+                    <input id="orderDateInput" class="form-control" type="date" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -30,14 +35,39 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
-                    <input asp-for="TotalAmount" class="form-control" />
+                    <input asp-for="TotalAmount" class="form-control" readonly />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
-                @*@*<div class="form-group">
-            <p>Select a Product</p>
-            <select asp-for="ProductId" asp-items="ViewBag.Products" class="form-control">
-            </select>
-        </div>*@
+                <h2>Product Items</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>TotalAmount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.OrderItems.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <input asp-for="@Model.OrderItems[i].Product.Name" class="form-control" />
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.OrderItems[i].Quantity" class="form-control" />
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.OrderItems[i].TotalAmount" class="form-control" readonly />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="removeItem(@i)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success" />
                 </div>
@@ -52,3 +82,24 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+    document.getElementById('orderDateInput').value = formatDate(new Date());
+
+    function removeItem(index) {
+        var row = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr')[index];
+        row.remove();
+    }
+</script>

@@ -13,36 +13,35 @@
         margin-top: 20px;
     }
 </style>
-<h1>Add an Order</h1>
+
 
 <div class="container">
     <form asp-action="Create" id="orderForm">
         <div class="row">
-            <div class="col-6 col-sm-4">
+            <div class="col-md-12 text-center">
+                <h1>Add an Order</h1>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group" style="width: 300px;">
+                <div class="form-group">
                     <label asp-for="OrderNo" class="control-label"></label>
                     <input asp-for="OrderNo" class="form-control" />
                     <span asp-validation-for="OrderNo" class="text-danger"></span>
                 </div>
-                <div class="form-group" style="width: 300px;">
+                <div class="form-group">
                     <label asp-for="OrderDate" class="control-label"></label>
                     <input id="orderDateInput" class="form-control" type="date" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
 
 
-                <div class="form-group" style="width: 300px;">
+                <div class="form-group">
                     <label asp-for="CustomerName"></label>
                     <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control"></select>
                 </div>
-                <div class="form-group" style="width: 300px;">
+                <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
                     <input asp-for="TotalAmount" id="totalAmountInput" class="form-control" readonly />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="col-6 col-sm-4">
                 <div class="form-group">
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProductModal">Add Product</button>
                 </div>
@@ -99,10 +98,12 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </form>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -240,6 +241,7 @@
             }
         }
     }
+
 
 
 
