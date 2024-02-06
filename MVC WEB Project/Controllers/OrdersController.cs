@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC_WEB_Project.Data;
 using MVC_WEB_Project.Models;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MVC_WEB_Project.Controllers
 {
@@ -54,13 +56,32 @@ namespace MVC_WEB_Project.Controllers
 
             return View(order);
         }
+        //para ig click sa modal ni katung create page or add order page
+        // AJAX action to retrieve product details
+        [HttpGet]
+        public IActionResult GetProductDetails(int productId)
+        {
+            var product = _context.Products
+                .Where(p => p.ProductId == productId)
+                .Select(p => new { p.ProductId, name = p.Name, p.Price }) 
+                .FirstOrDefault();
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Json(product);
+        }
+
+
 
         // GET: Orders/Create
         public IActionResult Create()
         {
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
-            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
-            return View();
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "Name");
+            return View(new Order { OrderItems = new List<OrderItem> { new OrderItem() } });
         }
 
         // POST: Orders/Create
@@ -110,7 +131,8 @@ namespace MVC_WEB_Project.Controllers
             }
 
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
-            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "Name");
+
 
             return View(order);
         }

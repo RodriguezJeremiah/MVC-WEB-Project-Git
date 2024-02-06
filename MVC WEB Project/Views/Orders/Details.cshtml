@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
+
 <style>
     .row {
         text-align: center;
@@ -10,6 +11,7 @@
         float: none;
     }
 </style>
+
 <div class="text-center">
     <h1>Order Details</h1>
 
@@ -19,7 +21,7 @@
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.OrderNo)
             </dt>
-            <dt class="col-sm-2">
+            <dt class="col-sm-10">
                 @Html.DisplayFor(model => model.OrderNo)
             </dt>
             <dt class="col-sm-2">
@@ -41,9 +43,33 @@
                 @Html.DisplayFor(model => model.TotalAmount)
             </dd>
         </dl>
+
+        <h2>Product Items</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderItem in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@orderItem.Product.Name</td>
+                        <td>@orderItem.Quantity</td>
+                        <td>@orderItem.Price</td>
+                        <td>@orderItem.TotalAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
+
     <div>
         <a asp-action="Edit" asp-route-id="@Model.OrderNo" class="btn btn-primary">Edit</a> |
-        <a asp-action="Index"  class="btn btn-info">Back to List</a>
+        <a asp-action="Index" class="btn btn-info">Back to List</a>
     </div>
-    </div>
+</div>

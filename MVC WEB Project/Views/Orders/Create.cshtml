@@ -3,79 +3,237 @@
 @{
     ViewData["Title"] = "Create";
 }
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2B3Y2BUHVHwM1c47lbRDXx4jQV4vpcJ2" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-Zd0Q1UAdI1+g8L1Dp1k6dbWtvxA2msrXzmhPHc8z6jIb9dKEp4FFgVJkXIdbMVa6" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2B3Y2BUHVHwM1c47lbRDXx4jQV4vpcJ2" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 <style>
-    .row {
-        text-align: center;
-        display: inline-block;
-        float: none;
+    .table-container {
+        margin-top: 20px;
     }
 </style>
-<div class="text-center">
-    <h1>Add an Order</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
+<h1>Add an Order</h1>
+
+<div class="container">
+    <form asp-action="Create" id="orderForm">
+        <div class="row">
+            <div class="col-6 col-sm-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
+                <div class="form-group" style="width: 300px;">
+                    <label asp-for="OrderNo" class="control-label"></label>
+                    <input asp-for="OrderNo" class="form-control" />
+                    <span asp-validation-for="OrderNo" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="width: 300px;">
                     <label asp-for="OrderDate" class="control-label"></label>
-                    <input asp-for="OrderDate" class="form-control" />
+                    <input asp-for="OrderDate" class="form-control" asp-format="{0:yyyy-MM-dd}" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="CustomerId"></label>
+
+                <div class="form-group" style="width: 300px;">
+                    <label asp-for="CustomerName"></label>
                     <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control"></select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="width: 300px;">
                     <label asp-for="TotalAmount" class="control-label"></label>
-                    <input asp-for="TotalAmount" class="form-control" readonly />
+                    <input asp-for="TotalAmount" id="totalAmountInput" class="form-control" readonly />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
-
+            </div>
+            <div class="col-6 col-sm-4">
                 <div class="form-group">
-                    <label asp-for="Product"></label>
-                    <select asp-for="Product" asp-items="ViewBag.Products" class="form-control"></select>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProductModal">Add Product</button>
                 </div>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr>
-                            <td>
-                                <select @*asp-for="OrderItems[i].ProductId" asp-items="ViewBag.Products"*@ class="form-control"></select>
-                            </td>
-                            <td>
-                                <input @*asp-for="OrderItems[i].Quantity"*@ class="form-control" />
-                            </td>
-                            <td>
-                                <input @*asp-for="OrderItems[i].Price"*@ class="form-control" readonly />
-                            </td>
-                            <td>
-                                <input @*asp-for="OrderItems[i].TotalAmount"*@ class="form-control" readonly />
-                            </td>
-                        </tr>
-
-
-                    </tbody>
-                </table>
-
+                <div class="table-container">
+                    <table class="table" id="orderItemsTable">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="form-group">
                     <input type="submit" value="Submit" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-info">Back to List</a>
                 </div>
-            </form>
+
+                <!-- Move modal code inside the form -->
+                <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="productId">Product:</label>
+                                    <select id="productId" class="form-control" required>
+                                        <option value="">Select a Product</option>
+                                        @foreach (var product in ViewBag.Products)
+                                        {
+                                            <option value="@product.Value">@product.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quantity">Quantity:</label>
+                                    <input type="number" id="quantity" class="form-control" min="1" required />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="addProductFromModal()">Add Product</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div>
-        <a asp-action="Index" class="btn btn-info">Back to List</a>
-    </div>
+    </form>
 </div>
+<script>
+    $(function () {
+        $("#OrderDate").datepicker({
+            dateFormat: "yy-mm-dd", // Use your preferred date format
+            changeYear: true // Allow year selection
+        });
+    });
+
+</script>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+        function addRow(product, quantity) {
+            var table = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
+            var productCell = newRow.insertCell(0);
+            var quantityCell = newRow.insertCell(1);
+            var priceCell = newRow.insertCell(2);
+            var totalAmountCell = newRow.insertCell(3);
+            var actionCell = newRow.insertCell(4);
+
+            // Populate the cells with the selected product and quantity
+            productCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].ProductId" value="' + product.productId + '" hidden />' +
+                '<input class="form-control" value="' + product.name + '" readonly />'; // Use product.name instead of product.Name
+            quantityCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].Quantity" value="' + quantity + '" class="form-control" readonly />';
+            priceCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].Price" value="' + product.price + '" class="form-control" readonly />';
+            totalAmountCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].TotalAmount" value="' + (quantity * product.price).toFixed(2) + '" class="form-control" readonly />';
+            actionCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeRow('+ (table.rows.length - 1) +')">Remove</button>';
+
+            updateTotalAmount();
+            updateTableFromModal();
+        }
+
+
+
+
+        function addProductFromModal() {
+        var productId = document.getElementById("productId").value;
+        var quantity = document.getElementById("quantity").value;
+
+        if (productId && quantity > 0) {
+            // Fetch product details using AJAX
+            $.ajax({
+                url: '@Url.Action("GetProductDetails", "Orders")',
+                type: 'GET',
+                data: { productId: productId },
+                success: function (product) {
+                    if (product) {
+                        addRow(product, quantity);
+                        $('#addProductModal').modal('hide');
+                    }
+                },
+                error: function () {
+                    console.error('Error fetching product details.');
+                }
+            });
+              }
+            updateTableFromModal();
+        }
+
+
+
+        function openAddProductModal() {
+            $('#addProductModal').modal('show');
+        }
+
+        // Updated the function to populate the table with modal values when form is submitted
+        function updateTableFromModal() {
+            var productId = document.getElementById("productId").value;
+            var quantity = document.getElementById("quantity").value;
+
+            if (productId && quantity > 0) {
+                // Fetch product details using AJAX or other methods
+                // For simplicity, I assume you have a global variable 'products' with product details
+                var product = products.find(p => p.productId === parseInt(productId));
+
+                if (product) {
+                    addRow(product, quantity);
+                    $('#addProductModal').modal('hide');
+                }
+            }
+        }
+
+        function updatePriceAndTotal(inputElement) {
+            var rowIndex = inputElement.parentNode.parentNode.rowIndex;
+            var quantity = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].Quantity')[0].value;
+            var productId = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].ProductId')[0].value;
+
+            if (quantity && productId) {
+                // Fetch product details using AJAX or other methods
+                // For simplicity, I assume you have a global variable 'products' with product details
+                var product = products.find(p => p.productId === parseInt(productId));
+
+                if (product) {
+                    var priceInput = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].Price')[0];
+                    var totalAmountInput = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].TotalAmount')[0];
+
+                    priceInput.value = product.price;
+                    totalAmountInput.value = (parseFloat(quantity) * parseFloat(product.price)).toFixed(2);
+                }
+            }
+            updateTotalAmount();
+            updateTableFromModal()
+        }
+
+        function removeRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            console.log(button);
+            updateTotalAmount();
+            updateTableFromModal();
+        }
+
+    function updateTotalAmount() {
+        // Get all the rows in the table
+        var rows = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        // Initialize total amount
+        var totalAmount = 0;
+
+        // Iterate through each row and sum up the total amount
+        for (var i = 0; i < rows.length; i++) {
+            var totalAmountInput = rows[i].getElementsByTagName('input')[4];
+            totalAmount += parseFloat(totalAmountInput.value) || 0;
+        }
+
+        // Update the total amount input
+        document.getElementById("totalAmountInput").value = totalAmount.toFixed(2);
+    }
+</script>

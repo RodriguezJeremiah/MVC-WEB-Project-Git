@@ -20,6 +20,6 @@ namespace MVC_WEB_Project.Models
         //public int  { get; set; }
         //Navigation property for OrderItems
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        public Products Product { get; set; }
+        //public Products Product { get; set; }
     }
 }
