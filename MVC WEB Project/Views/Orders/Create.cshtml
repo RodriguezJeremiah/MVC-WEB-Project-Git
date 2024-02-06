@@ -7,8 +7,6 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-Zd0Q1UAdI1+g8L1Dp1k6dbWtvxA2msrXzmhPHc8z6jIb9dKEp4FFgVJkXIdbMVa6" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2B3Y2BUHVHwM1c47lbRDXx4jQV4vpcJ2" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 <style>
     .table-container {
@@ -29,9 +27,10 @@
                 </div>
                 <div class="form-group" style="width: 300px;">
                     <label asp-for="OrderDate" class="control-label"></label>
-                    <input asp-for="OrderDate" class="form-control" asp-format="{0:yyyy-MM-dd}" />
+                    <input id="orderDateInput" class="form-control" type="date" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
+
 
                 <div class="form-group" style="width: 300px;">
                     <label asp-for="CustomerName"></label>
@@ -104,41 +103,47 @@
         </div>
     </form>
 </div>
-<script>
-    $(function () {
-        $("#OrderDate").datepicker({
-            dateFormat: "yy-mm-dd", // Use your preferred date format
-            changeYear: true // Allow year selection
-        });
-    });
-
-</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+    document.getElementById('orderDateInput').value = formatDate(new Date());
+</script>
 
 <script>
-        function addRow(product, quantity) {
-            var table = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0];
-            var newRow = table.insertRow(table.rows.length);
-            var productCell = newRow.insertCell(0);
-            var quantityCell = newRow.insertCell(1);
-            var priceCell = newRow.insertCell(2);
-            var totalAmountCell = newRow.insertCell(3);
-            var actionCell = newRow.insertCell(4);
+    function addRow(product, quantity) {
+        var table = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow();
+        var productCell = newRow.insertCell(0);
+        var quantityCell = newRow.insertCell(1);
+        var priceCell = newRow.insertCell(2);
+        var totalAmountCell = newRow.insertCell(3);
+        var actionCell = newRow.insertCell(4);
 
-            // Populate the cells with the selected product and quantity
-            productCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].ProductId" value="' + product.productId + '" hidden />' +
-                '<input class="form-control" value="' + product.name + '" readonly />'; // Use product.name instead of product.Name
-            quantityCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].Quantity" value="' + quantity + '" class="form-control" readonly />';
-            priceCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].Price" value="' + product.price + '" class="form-control" readonly />';
-            totalAmountCell.innerHTML = '<input name="OrderItems[' + (table.rows.length - 1) + '].TotalAmount" value="' + (quantity * product.price).toFixed(2) + '" class="form-control" readonly />';
-            actionCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeRow('+ (table.rows.length - 1) +')">Remove</button>';
+        // Populate the cells with the selected product and quantity
+        productCell.innerHTML = '<input name="OrderItems[' + table.rows.length + '].ProductId" value="' + product.productId + '" hidden />' +
+            '<input class="form-control" value="' + product.name + '" readonly />';
+        quantityCell.innerHTML = '<input name="OrderItems[' + table.rows.length + '].Quantity" value="' + quantity + '" class="form-control" readonly />';
+        priceCell.innerHTML = '<input name="OrderItems[' + table.rows.length + '].Price" value="' + product.price + '" class="form-control" readonly />';
+        totalAmountCell.innerHTML = '<input name="OrderItems[' + table.rows.length + '].TotalAmount" value="' + (quantity * product.price).toFixed(2) + '" class="form-control" readonly />';
+        actionCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>';
 
-            updateTotalAmount();
-            updateTableFromModal();
-        }
+        updateTotalAmount();
+    }
 
 
 
@@ -210,30 +215,44 @@
             }
             updateTotalAmount();
             updateTableFromModal()
-        }
+    }
 
-        function removeRow(button) {
-            var row = button.parentNode.parentNode;
-            row.parentNode.removeChild(row);
-            console.log(button);
-            updateTotalAmount();
-            updateTableFromModal();
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+
+        updateIndices();
+        updateTotalAmount();
+    }
+
+    function updateIndices() {
+        var table = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0];
+        var rows = table.getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var inputs = rows[i].getElementsByTagName('input');
+            for (var j = 0; j < inputs.length; j++) {
+                var input = inputs[j];
+                var name = input.getAttribute('name');
+                if (name) {
+                    input.setAttribute('name', name.replace(/\[(\d+)\]/, '[' + i + ']'));
+                }
+            }
         }
+    }
+
+
+
 
     function updateTotalAmount() {
-        // Get all the rows in the table
         var rows = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-        // Initialize total amount
         var totalAmount = 0;
 
-        // Iterate through each row and sum up the total amount
         for (var i = 0; i < rows.length; i++) {
             var totalAmountInput = rows[i].getElementsByTagName('input')[4];
             totalAmount += parseFloat(totalAmountInput.value) || 0;
         }
 
-        // Update the total amount input
         document.getElementById("totalAmountInput").value = totalAmount.toFixed(2);
     }
 </script>
