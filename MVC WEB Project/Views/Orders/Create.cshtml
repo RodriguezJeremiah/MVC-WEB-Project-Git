@@ -11,14 +11,19 @@
 <style>
     .table-container {
         margin-top: 20px;
+        width: 800px;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 </style>
-
-
 <div class="container">
     <form asp-action="Create" id="orderForm">
         <div class="row">
-            <div class="col-md-12 text-center">
+            <div class="col-xs-1 text-center">
                 <h1>Add an Order</h1>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -32,14 +37,13 @@
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
 
-
                 <div class="form-group">
                     <label asp-for="CustomerName"></label>
                     <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="TotalAmount" class="control-label"></label>
-                    <input asp-for="TotalAmount" id="totalAmountInput" class="form-control" readonly />
+                    <input asp-for="TotalAmount" id="totalAmountInput" class="form-control" readonly/>
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
                 <div class="form-group">

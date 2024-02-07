@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2B3Y2BUHVHwM1c47lbRDXx4jQV4vpcJ2" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-Zd0Q1UAdI1+g8L1Dp1k6dbWtvxA2msrXzmhPHc8z6jIb9dKEp4FFgVJkXIdbMVa6" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2B3Y2BUHVHwM1c47lbRDXx4jQV4vpcJ2" crossorigin="anonymous"></script>
 
 <style>
     .row {
@@ -16,7 +20,7 @@
     <hr />
     <div class="row">
         <div class="col-xs-1 text-center">
-            <form asp-action="Edit">
+            <form asp-action="Edit" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="OrderNo" class="control-label"></label>
@@ -38,6 +42,42 @@
                     <input asp-for="TotalAmount" id="totalAmountInput" class="form-control" readonly />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
+                @*<div class="form-group">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProductModal">Add Product</button>
+                    </div>*@
+                <!-- Move modal code inside the form -->
+                @*<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="productId">Product:</label>
+                                        <select id="productId" class="form-control" required>
+                                            <option value="">Select a Product</option>
+                                            @foreach (var product in ViewBag.Products)
+                                            {
+                                                <option value="@product.Value">@product.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity">Quantity:</label>
+                                        <input type="number" id="quantity" class="form-control" min="1" required />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="addProductFromModal()">Add Product</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
                 <h2>Product Items</h2>
                 <table class="table">
                     <thead>
@@ -57,13 +97,13 @@
                                     <input asp-for="@Model.OrderItems[i].Product.Name" class="form-control" readonly />
                                 </td>
                                 <td>
-                                    <input asp-for="@Model.OrderItems[i].Quantity" class="form-control" onchange="updateTotalAmount()" />
+                                    <input asp-for="@Model.OrderItems[i].Quantity" id="quantity" class="form-control" onchange="updateTotalAmount()" />
                                 </td>
                                 <td>
                                     <input asp-for="@Model.OrderItems[i].Price" class="form-control" readonly />
                                 </td>
                                 <td>
-                                    <input asp-for="@Model.OrderItems[i].TotalAmount" class="form-control" readonly />
+                                    <input asp-for="@Model.OrderItems[i].TotalAmount" id="totalAmountInput" class="form-control" readonly />
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-danger" onclick="removeItem(@i)">Delete</button>
@@ -72,6 +112,7 @@
                         }
                     </tbody>
                 </table>
+
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-success" />
                 </div>
@@ -109,13 +150,27 @@
     }
 
     function updateTotalAmount() {
-        var rows = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        console.log("hello");
+        var tbody = document.getElementById("orderItemsTable");
+        if (!tbody) {
+            console.error("orderItemsTable not found");
+            return;
+        }
+
+        var rows = tbody.getElementsByTagName('tr');
+        console.log("Rows:", rows);
+
         var totalAmount = 0;
 
         for (var i = 0; i < rows.length; i++) {
             var quantityInput = rows[i].querySelector('input[name$=".Quantity"]');
-            var priceInput = rows[i].getElementsByTagName('input')[2];
-            var totalAmountInput = rows[i].getElementsByTagName('input')[3];
+            var priceInput = rows[i].querySelector('input[name$=".Price"]');
+            var totalAmountInput = rows[i].querySelector('input[name$=".TotalAmount"]');
+
+            if (!quantityInput || !priceInput || !totalAmountInput) {
+                console.error("Input elements not found in row", i);
+                continue;
+            }
 
             var quantity = parseInt(quantityInput.value) || 0;
             var price = parseFloat(priceInput.value) || 0;
@@ -129,7 +184,6 @@
         document.getElementById("totalAmountInput").value = totalAmount.toFixed(2);
     }
 
-    // Use input event instead of change event for quantity inputs
     var quantityInputs = document.querySelectorAll('input[name$=".Quantity"]');
     quantityInputs.forEach(function (input) {
         input.addEventListener('input', function () {
@@ -137,4 +191,5 @@
         });
     });
 </script>
+
 
