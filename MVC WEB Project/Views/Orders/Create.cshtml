@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="OrderDate" class="control-label"></label>
-                    <input id="orderDateInput" class="form-control" type="date" />
+                    <input id="orderDateInput" class="form-control" type="date" asp-for="OrderDate" />
                     <span asp-validation-for="OrderDate" class="text-danger"></span>
                 </div>
 
@@ -124,7 +124,6 @@
     }
     document.getElementById('orderDateInput').value = formatDate(new Date());
 </script>
-
 <script>
     function addRow(product, quantity) {
         var table = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0];
@@ -143,18 +142,15 @@
         totalAmountCell.innerHTML = '<input name="OrderItems[' + table.rows.length + '].TotalAmount" value="' + (quantity * product.price).toFixed(2) + '" class="form-control" readonly />';
         actionCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>';
 
+        updateIndices();
         updateTotalAmount();
     }
 
-
-
-
-        function addProductFromModal() {
+    function addProductFromModal() {
         var productId = document.getElementById("productId").value;
         var quantity = document.getElementById("quantity").value;
 
         if (productId && quantity > 0) {
-            // Fetch product details using AJAX
             $.ajax({
                 url: '@Url.Action("GetProductDetails", "Orders")',
                 type: 'GET',
@@ -169,53 +165,7 @@
                     console.error('Error fetching product details.');
                 }
             });
-              }
-            updateTableFromModal();
         }
-
-
-
-        function openAddProductModal() {
-            $('#addProductModal').modal('show');
-        }
-
-        // Updated the function to populate the table with modal values when form is submitted
-        function updateTableFromModal() {
-            var productId = document.getElementById("productId").value;
-            var quantity = document.getElementById("quantity").value;
-
-            if (productId && quantity > 0) {
-                // Fetch product details using AJAX or other methods
-                // For simplicity, I assume you have a global variable 'products' with product details
-                var product = products.find(p => p.productId === parseInt(productId));
-
-                if (product) {
-                    addRow(product, quantity);
-                    $('#addProductModal').modal('hide');
-                }
-            }
-        }
-
-        function updatePriceAndTotal(inputElement) {
-            var rowIndex = inputElement.parentNode.parentNode.rowIndex;
-            var quantity = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].Quantity')[0].value;
-            var productId = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].ProductId')[0].value;
-
-            if (quantity && productId) {
-                // Fetch product details using AJAX or other methods
-                // For simplicity, I assume you have a global variable 'products' with product details
-                var product = products.find(p => p.productId === parseInt(productId));
-
-                if (product) {
-                    var priceInput = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].Price')[0];
-                    var totalAmountInput = document.getElementsByName('OrderItems[' + (rowIndex - 1) + '].TotalAmount')[0];
-
-                    priceInput.value = product.price;
-                    totalAmountInput.value = (parseFloat(quantity) * parseFloat(product.price)).toFixed(2);
-                }
-            }
-            updateTotalAmount();
-            updateTableFromModal()
     }
 
     function removeRow(button) {
@@ -242,16 +192,12 @@
         }
     }
 
-
-
-
-
     function updateTotalAmount() {
         var rows = document.getElementById("orderItemsTable").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
         var totalAmount = 0;
 
         for (var i = 0; i < rows.length; i++) {
-            var totalAmountInput = rows[i].getElementsByTagName('input')[4];
+            var totalAmountInput = rows[i].getElementsByTagName('input')[3];
             totalAmount += parseFloat(totalAmountInput.value) || 0;
         }
 

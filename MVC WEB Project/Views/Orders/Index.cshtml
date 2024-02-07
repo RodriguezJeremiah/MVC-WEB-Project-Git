@@ -38,25 +38,25 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderNo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CustomerName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalAmount)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.OrderNo" class="btn btn-primary">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.OrderNo" class="btn btn-info">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.OrderNo" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderNo)
+                </td>
+                <td>
+                    @item.OrderDate.Date.ToString("yyyy-MM-dd")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderNo" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OrderNo" class="btn btn-info">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OrderNo" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

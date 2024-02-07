@@ -9,6 +9,7 @@ using MVC_WEB_Project.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
+
 namespace MVC_WEB_Project.Controllers
 {
     public class OrdersController : Controller
@@ -165,41 +166,76 @@ namespace MVC_WEB_Project.Controllers
         // POST: Orders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Order order)
+        public async Task<IActionResult> Edit(int id, Order order)
         {
+            if (id != order.OrderNo)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                // Retrieve customer details based on selected CustomerId
-                var selectedCustomer = _context.Customers.FirstOrDefault(c => c.CustomerId == order.CustomerId);
-                order.CustomerName = selectedCustomer?.CustomerName;
-
-                // Update stock and create order items
-                foreach (var orderItem in order.OrderItems)
+                try
                 {
-                    var product = _context.Products.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
-                    if (product != null)
-                    {
-                        // Update stock
-                        product.StockOnHand -= orderItem.Quantity;
+                    var existingOrder = await _context.Order
+                        .Include(o => o.OrderItems)
+                        .FirstOrDefaultAsync(m => m.OrderNo == id);
 
-                        // Calculate total amount for the order item
-                        orderItem.TotalAmount = orderItem.Quantity * product.Price;
+                    if (existingOrder == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingOrder.OrderDate = order.OrderDate;
+                    existingOrder.CustomerName = order.CustomerName;
+
+                    // Update order items
+                    foreach (var item in order.OrderItems)
+                    {
+                        var existingItem = existingOrder.OrderItems.FirstOrDefault(oi => oi.ProductId == item.ProductId);
+                        if (existingItem != null)
+                        {
+                            existingItem.Quantity = item.Quantity;
+                            // Recalculate total amount based on updated quantity
+                            existingItem.TotalAmount = existingItem.Quantity * existingItem.Price;
+                        }
+                        else
+                        {
+                            // Handle scenario where new order items are added
+                            existingOrder.OrderItems.Add(item);
+                        }
+                    }
+
+                    // Remove order items that are not present in the updated order
+                    existingOrder.OrderItems.RemoveAll(oi => !order.OrderItems.Any(oi2 => oi2.ProductId == oi.ProductId));
+
+                    // Recalculate total amount for the order
+                    existingOrder.TotalAmount = existingOrder.OrderItems.Sum(oi => oi.TotalAmount);
+
+                    _context.Update(existingOrder);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!OrderExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
                     }
                 }
-
-                // Update order in the context
-                _context.Update(order);
-
-                _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
             }
 
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName");
-            ViewBag.Products = new SelectList(_context.Products, "ProductId", "ProductName");
+            ViewBag.Products = new SelectList(_context.Products, "ProductId", "Name");
 
             return View(order);
         }
+
 
         // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
